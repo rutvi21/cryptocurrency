@@ -46,7 +46,7 @@ BRF:10
 BRH:10
 end_of_record
 TN:
-SF:/Users/rutvitilala/Documents/cryptocurrency/v2.0/contracts/RandomMusicNFT.sol
+SF:/Users/rutvitilala/Documents/cryptocurrency/v2.0/contracts/RandomNFT.sol
 FN:12,constructor
 FN:17,mintNFT
 FNF:2

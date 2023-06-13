@@ -19,25 +19,25 @@ describe("NFTDutchAuction", function () {
     const [owner, account1, account2] = await ethers.getSigners();
 
     //Deploy and mint NFT contract
-    const RandomMusicNFT = await ethers.getContractFactory("RandomMusicNFT");
-    const randomMusicNFT = await RandomMusicNFT.deploy();
+    const RandomNFT = await ethers.getContractFactory("RandomNFT");
+    const randomNFT = await RandomNFT.deploy();
     await (
-      await randomMusicNFT.mintNFT(owner.address, TOKEN_URI)
+      await randomNFT.mintNFT(owner.address, TOKEN_URI)
     ).to;
 
     const NFTDutchAuction = await ethers.getContractFactory("NFTDutchAuction");
 
     const nftDutchAuction = await NFTDutchAuction.deploy(
-      randomMusicNFT.address,
+      randomNFT.address,
       NFT_TOKEN_ID,
       RESERVE_PRICE,
       NUM_BLOCKS_AUCTION_OPEN,
       OFFER_PRICE_DECREMENT
     );
 
-    randomMusicNFT.approve(nftDutchAuction.address, NFT_TOKEN_ID);
+    randomNFT.approve(nftDutchAuction.address, NFT_TOKEN_ID);
 
-    return { randomMusicNFT, nftDutchAuction, owner, account1, account2 };
+    return { randomNFT, nftDutchAuction, owner, account1, account2 };
   }
 
   describe("Deployment", function () {
@@ -56,13 +56,13 @@ describe("NFTDutchAuction", function () {
     });
 
     it("Should not allow Auction creator to deploy contract if the NFT does not belong to them", async function () {
-      const { randomMusicNFT, account1 } = await loadFixture(
+      const { randomNFT, account1 } = await loadFixture(
         deployNFTDAFixture
       );
 
       //Mint NFT with tokenId 1 to account1
-      await expect(randomMusicNFT.mintNFT(account1.address, "Test URI"))
-        .to.emit(randomMusicNFT, "Transfer")
+      await expect(randomNFT.mintNFT(account1.address, "Test URI"))
+        .to.emit(randomNFT, "Transfer")
         .withArgs(ethers.constants.AddressZero, account1.address, 1);
 
       //Deploy NFT contract with account1's tokenId, should fail
@@ -71,7 +71,7 @@ describe("NFTDutchAuction", function () {
       );
       await expect(
         NFTDutchAuction.deploy(
-          randomMusicNFT.address,
+          randomNFT.address,
           1,
           RESERVE_PRICE,
           NUM_BLOCKS_AUCTION_OPEN,
@@ -244,7 +244,7 @@ describe("NFTDutchAuction", function () {
     });
 
     it("Should transfer the NFT from Owner's account to Bidder's account", async function () {
-      const { nftDutchAuction, randomMusicNFT, owner, account1 } =
+      const { nftDutchAuction, randomNFT, owner, account1 } =
         await loadFixture(deployNFTDAFixture);
       //mine 5 blocks
       await mine(5);
@@ -260,18 +260,18 @@ describe("NFTDutchAuction", function () {
           value: highBidPrice,
         })
       )
-        .to.emit(randomMusicNFT, "Transfer")
+        .to.emit(randomNFT, "Transfer")
         .withArgs(owner.address, account1.address, NFT_TOKEN_ID);
 
       //NFT contract should reflect the NFT ownership in account1's address
 
-      expect(await randomMusicNFT.ownerOf(NFT_TOKEN_ID)).to.equal(
+      expect(await randomNFT.ownerOf(NFT_TOKEN_ID)).to.equal(
         account1.address
       );
     });
 
     it("Owner should still own the NFT after the auction expires if there is no winning bid", async function () {
-      const { nftDutchAuction, randomMusicNFT, owner, account2 } =
+      const { nftDutchAuction, randomNFT, owner, account2 } =
         await loadFixture(deployNFTDAFixture);
       //mine 5 blocks
       await mine(NUM_BLOCKS_AUCTION_OPEN + 1);
@@ -289,7 +289,7 @@ describe("NFTDutchAuction", function () {
       ).to.be.revertedWith("Auction expired");
 
       //NFT should still belong to owner
-      expect(await randomMusicNFT.ownerOf(NFT_TOKEN_ID)).to.equal(
+      expect(await randomNFT.ownerOf(NFT_TOKEN_ID)).to.equal(
         owner.address
       );
     });
