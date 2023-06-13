@@ -6,4 +6,4 @@ typechain-types
 # Hardhat files
 cache
 artifacts
-
+coverage.json
