@@ -1,0 +1,14 @@
+
+# Env
+.env
+
+# Node JS
+node_modules
+
+# Typechain
+typechain
+
+# Hardhat
+artifacts
+cache
+
