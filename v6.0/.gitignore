@@ -5,12 +5,9 @@
 # Node JS
 node_modules
 
-# Coverage
-coverage*
-coverage.json
-
 # Typechain
 typechain
+typechain-types
 
 # Hardhat
 artifacts
