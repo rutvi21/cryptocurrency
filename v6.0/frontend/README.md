@@ -12,12 +12,14 @@ The first bid processed by the contract that sends wei greater than or equal to 
 
 
 The UI should has three sections. Feel free to use the following layouts in your app, or something similar.
+
 Section 1: Deployment
 Inputs:
 A textbox for each parameter in the constructor
 A button called “Deploy”
 Outputs:
 A label with the address of the newly created BasicDutchAuction
+
 Section 2: Look up info on an auction
 Inputs:
 A textbox for the address of a BasicDutchAction.
@@ -27,6 +29,7 @@ A label for each property of the BasicDutchAction:
 Winner, if one already exists
 Constructor parameters
 Current price
+
 Section 3: Submit a bid
 Input: 
 A textbox for the address of a BasicDutchAction.
@@ -52,3 +55,29 @@ npx hardhar coverage
 npx hardhat deploy
 npx hardhat node
 npm start
+
+# Basic Duct Auction v7.0
+
+1. Deploy your Version 6.0 dapp on an Ethereum testnet.
+This step will require getting test ETH from a faucet.
+Sometimes these faucets can be unreliable, so you'll have to keep searching online for a faucet that gives you enough ETH to successfully deploy your contract.
+Hardhat can deploy your contracts for you: Deploying to a Live Network
+
+2. Host your UI through IPFS.
+You will host your UI on your own machine, and you will use IPFS to enable others to access it through an ipfs:// URL.
+Get the CID of your build directory that contains your built UI, and prefix the CID with "ipfs://".
+
+My IPFS URL is: https://ipfs.io/ipfs/QmSHnwtocARE3xvJU19XtofZ7pPnVDoHMWBFXTYN5GCkr3/
+
+3. Steps:
+Generate build files for your UI.
+Install IPFS desktop and IPFS browser plugin.
+Pin your UI build files to your IPFS Desktop node.
+Add the IPFS URL to your README.md file in your repo.
+
+4. Final Output:
+Show that your contracts are deployed on a testnet.
+Show that your UI is accessible by anyone through the IPFS URL.
+Show that users can interact with your UI through IPFS and the MetaMask plugin by:
+Deploying a new BasicDutchAuction.
+Submitting a winning bid.
